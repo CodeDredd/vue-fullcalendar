@@ -172,14 +172,13 @@
             },
             removeEvents() {
                 this.calendar.batchRendering(() => {
-                    this.events.forEach(event => {
+                    this.calendar.getEvents().forEach(event => {
                         let eventObj = this.calendar.getEventById(event.id)
                         eventObj.remove()
                     });
                 });
             }
         },
-
         watch: {
             events: {
                 deep: true,

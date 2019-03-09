@@ -57,7 +57,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.6.1' };
+var core = module.exports = { version: '2.5.1' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 });
 
@@ -169,11 +169,6 @@ var _hide = _descriptors ? function (object, key, value) {
   return object;
 };
 
-var hasOwnProperty = {}.hasOwnProperty;
-var _has = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
@@ -191,7 +186,7 @@ var $export = function (type, name, source) {
   for (key in source) {
     // contains in native
     own = !IS_FORCED && target && target[key] !== undefined;
-    if (own && _has(exports, key)) continue;
+    if (own && key in exports) continue;
     // export native or passed
     out = own ? target[key] : source[key];
     // prevent global pollution for namespaces
@@ -233,6 +228,11 @@ $export.R = 128; // real proto method for `library`
 var _export = $export;
 
 var _redefine = _hide;
+
+var hasOwnProperty = {}.hasOwnProperty;
+var _has = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
 
 var _iterators = {};
 
@@ -294,18 +294,11 @@ var _arrayIncludes = function (IS_INCLUDES) {
   };
 };
 
-var _shared = createCommonjsModule(function (module) {
 var SHARED = '__core-js_shared__';
 var store = _global[SHARED] || (_global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: _core.version,
-  mode: _library ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-});
-});
+var _shared = function (key) {
+  return store[key] || (store[key] = {});
+};
 
 var id = 0;
 var px = Math.random();
@@ -488,7 +481,7 @@ var _iterDefine = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORC
       // Set @@toStringTag to native iterators
       _setToStringTag(IteratorPrototype, TAG, true);
       // fix for some old engines
-      if (!_library && typeof IteratorPrototype[ITERATOR] != 'function') _hide(IteratorPrototype, ITERATOR, returnThis);
+      if (!_library && !_has(IteratorPrototype, ITERATOR)) _hide(IteratorPrototype, ITERATOR, returnThis);
     }
   }
   // fix Array#{values, @@iterator}.name in V8 / FF
@@ -3133,7 +3126,7 @@ var FullCalendar$1 = { render: function render() {
             var _this2 = this;
 
             this.calendar.batchRendering(function () {
-                _this2.events.forEach(function (event) {
+                _this2.calendar.getEvents().forEach(function (event) {
                     var eventObj = _this2.calendar.getEventById(event.id);
                     eventObj.remove();
                 });

@@ -202,7 +202,7 @@ var FullCalendar$1 = { render: function render() {
             var _this2 = this;
 
             this.calendar.batchRendering(function () {
-                _this2.events.forEach(function (event) {
+                _this2.calendar.getEvents().forEach(function (event) {
                     var eventObj = _this2.calendar.getEventById(event.id);
                     eventObj.remove();
                 });
