@@ -90,6 +90,7 @@ var FullCalendar$1 = { render: function render() {
                 selectable: this.selectable,
                 selectMirror: this.selectMirror,
                 aspectRatio: 2,
+
                 timeFormat: 'HH:mm',
                 events: this.events,
                 eventSources: this.eventSources,
@@ -217,7 +218,6 @@ var FullCalendar$1 = { render: function render() {
             });
         }
     },
-
     watch: {
         events: {
             deep: true,
